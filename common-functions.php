@@ -21,7 +21,7 @@ if (!function_exists('ajax_response')) {
 	function ajax_response($data,$redirect = false){
 		if(ajax_request()){
 			$data_json = json_encode($data);
-			echo $data_json;			
+			echo $data_json;
 		} else {
 			$_SESSION['global_message'][] = $data;
 		}
@@ -48,12 +48,14 @@ if (!function_exists('setup_global_message')) {
 }
 
 if (!function_exists('the_global_message')) {
-	function the_global_message(){
+	function the_global_message($additional_class){
 		global $global_message;
+		// print_r($global_message);
+		// wp_die('die' );
 		if ($global_message != '' && (count($global_message) > 0)) {
 			foreach ($global_message as $message){
 				?>
-					<div id="" class="alert alert-<?php echo $message['type'].' '.$message['type'] ?>">
+					<div id="" class="alert alert-<?php echo $message['type'].' '.$message['type'].' '.$additional_class ?>">
 						<button type="button" class="close" data-dismiss="alert">×</button> <span><?php echo $message['message'] ?></span>
 					</div>
 				<?php
