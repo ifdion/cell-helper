@@ -5,7 +5,10 @@
 
 if (!function_exists('ajax_request')) {
 	function ajax_request(){
-		if(!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
+		if(
+			(!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') ||
+			(isset($_REQUEST['api']))
+		) {
 			return true;
 		} else {
 			return false;
@@ -22,13 +25,15 @@ if (!function_exists('ajax_response')) {
 		if(ajax_request()){
 			$data_json = json_encode($data);
 			echo $data_json;
+			exit;
 		} else {
 			$_SESSION['global_message'][] = $data;
-		}
-		if ($redirect) {
-			wp_redirect( $redirect );
-			exit;
-			die();
+			if ($redirect) {
+				wp_redirect( $redirect );
+				exit;
+			} else {
+				echo 'error : missing redirect';
+			}
 		}
 	}	
 }
